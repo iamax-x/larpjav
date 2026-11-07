@@ -1,0 +1,88 @@
+# Rust
+/target/
+**/*.rs.bk
+Cargo.lock
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+*.apk
+*.aab
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Android
+local.properties
+.gradle/
+build/
+captures/
+.externalNativeBuild/
+*.keystore
+*.jks
+
+# IDE specific
+*.iml
+*.ipr
+*.iws
+
+# Cargo
+Cargo.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+target/
+*.apk
+*.exe
+*.dll
+*.so
+*.dylib
+*.class
+*.jar
+*.war
+*.ear
+
+# Logs
+*.log
+
+# Temp
+*.tmp
+*.temp
+.tmp/
+
+# Cargo
+**/Cargo.lock
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db

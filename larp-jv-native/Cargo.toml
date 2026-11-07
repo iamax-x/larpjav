@@ -1,0 +1,31 @@
+[package]
+name = "larp-jv-native"
+version = "0.1.0"
+edition = "2024"
+license = "GPL-3.0-only"
+description = "Native libraries for larp.jv"
+repository = "https://github.com/larpjav/larp.jv"
+
+[dependencies]
+larp-jv-core = { path = "../larp-jv-core" }
+tokio = { workspace = true, features = ["full", "rt-multi-thread"] }
+async-trait = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+libc = { workspace = true }
+nix = { workspace = true, features = ["signal", "process", "fs", "net", "user"] }
+jni = { workspace = true, features = ["strings", "jni-7"] }
+freetype = "0.6"
+pack200 = "0.2"
+goblin = "0.7"
+object = "0.32"
+libloading = "0.8"
+
+[features]
+default = []
+android = ["jni"]
+unpack200 = ["pack200"]
+mojoexec = []
+jvm_hooks = []

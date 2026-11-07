@@ -1,0 +1,138 @@
+# larp.jv - Pure Rust Minecraft Java Edition Launcher
+
+[workspace]
+members = [
+    "larp-jv-core",
+    "larp-jv-android",
+    "larp-jv-desktop",
+    "larp-jv-native",
+    "larp-jv-build",
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "GPL-3.0-only"
+repository = "https://github.com/larpjav/larp.jv"
+description = "Pure Rust Minecraft Java Edition launcher for Android and Desktop"
+authors = ["larpjav contributors"]
+categories = ["game-engines", "network-programming", "system-tools"]
+keywords = ["minecraft", "launcher", "java", "android", "rust"]
+
+[workspace.dependencies]
+# Async runtime
+tokio = { version = "1.40", features = ["full", "rt-multi-thread", "macros", "time"] }
+async-trait = "0.1.82"
+futures = "0.3.30"
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+serde_with = "3.5"
+toml = "0.8"
+toml_edit = "0.22"
+
+# HTTP & Networking
+reqwest = { version = "0.12", features = ["json", "rustls-tls", "gzip", "brotli", "stream", "cookies"] }
+url = "2.5"
+http = "1.2"
+mime = "0.3"
+mime_guess = "2.0"
+
+# Crypto & Hashing
+ring = "0.17"
+sha1 = "0.10"
+sha2 = "0.10"
+md5 = "0.7"
+aes-gcm = { version = "0.10", features = ["aes-ni"] }
+zeroize = "1.8"
+rand = { version = "0.9", features = ["std", "getrandom"] }
+getrandom = { version = "0.2", features = ["js"] }
+
+# Compression & Archives
+zip = "0.6"
+flate2 = "1.0"
+zstd = "0.13"
+tar = "0.4"
+
+# File System & Paths
+walkdir = "2.5"
+glob = "0.3"
+tempfile = "3.10"
+directories = "5.0"
+
+# GUI & Rendering
+egui = { version = "0.30", features = ["wgpu", "accesskit", "image", "persistence", "epaint"] }
+epaint = "0.30"
+egui_wgpu = "0.30"
+egui_winit = "0.30"
+wgpu = { version = "0.19", features = ["wgpu-hal", "trace", "naga-ir"] }
+wgpu-hal = { version = "0.19", features = ["vulkan", "dx12", "metal", "gles"] }
+naga = "0.16"
+winit = { version = "0.30", features = ["serde", "raw-window-handle-06"] }
+raw-window-handle = "0.6"
+softbuffer = "0.5"
+
+# Android
+jni = { version = "0.21", features = ["strings", "jni-7"] }
+ndk = { version = "0.9", features = ["api-24", "log", "native-activity", "asset", "looper"] }
+ndk-sys = { version = "0.9", features = ["api-24"] }
+ndk-glue = "0.9"
+android-activity = { version = "0.57", features = ["native-activity"] }
+android-assets = "0.2"
+android_logger = "0.17"
+log = "0.4"
+tracing = { version = "0.1", features = ["log", "std"] }
+tracing-subscriber = { version = "0.3", features = ["json", "env-filter"] }
+
+# FFI & System
+libc = "0.2"
+nix = { version = "0.28", features = ["signal", "process", "fs", "net", "user"] }
+thiserror = "1.0"
+anyhow = "1.0"
+parking_lot = "0.12"
+dashmap = "6.1"
+once_cell = "1.19"
+crossbeam = "0.8"
+arc-swap = "1.7"
+
+# Utilities
+chrono = { version = "0.4", features = ["serde", "tz", "clock"] }
+uuid = { version = "1.8", features = ["serde", "v4", "v7"] }
+base64 = { version = "0.22", features = ["std"] }
+percent-encoding = "2.3"
+idna = "0.5"
+unicode-normalization = "0.1"
+clap = { version = "4.5", features = ["derive", "env", "std"] }
+indicatif = "0.17"
+console = "0.15"
+colored = "2.1"
+
+# Testing
+proptest = "1.2"
+mockito = { version = "1.4", features = ["server", "async"] }
+wiremock = "0.6"
+
+[profile.release]
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = "symbols"
+opt-level = "z"
+
+[profile.release-lto]
+inherits = "release"
+lto = "thin"
+
+[target.aarch64-linux-android]
+linker = "aarch64-linux-android24-clang"
+
+[target.armv7-linux-androideabi]
+linker = "armv7a-linux-androideabi24-clang"
+
+[target.i686-linux-android]
+linker = "i686-linux-android24-clang"
+
+[target.x86_64-linux-android]
+linker = "x86_64-linux-android24-clang"

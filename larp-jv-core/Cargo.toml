@@ -1,0 +1,76 @@
+[package]
+name = "larp-jv-core"
+version = "0.1.0"
+edition = "2024"
+license = "GPL-3.0-only"
+description = "Core library for larp.jv — Pure Rust Minecraft Java Edition launcher"
+repository = "https://github.com/larpjav/larp.jv"
+authors = ["larpjav contributors"]
+categories = ["game-engines", "network-programming", "system-tools"]
+keywords = ["minecraft", "launcher", "java", "android", "rust"]
+
+[dependencies]
+# Workspace deps
+tokio = { workspace = true, features = ["full", "rt-multi-thread", "macros", "time"] }
+async-trait = { workspace = true }
+futures = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }
+serde_with = { workspace = true }
+toml = { workspace = true }
+toml_edit = { workspace = true }
+reqwest = { workspace = true, features = ["json", "rustls-tls", "gzip", "brotli", "stream", "cookies"] }
+url = { workspace = true }
+http = { workspace = true }
+ring = { workspace = true }
+sha1 = { workspace = true }
+sha2 = { workspace = true }
+md5 = { workspace = true }
+aes-gcm = { workspace = true, features = ["aes-ni"] }
+zeroize = { workspace = true }
+rand = { workspace = true, features = ["std", "getrandom"] }
+getrandom = { workspace = true, features = ["js"] }
+zip = { workspace = true }
+flate2 = { workspace = true }
+zstd = { workspace = true }
+tar = { workspace = true }
+walkdir = { workspace = true }
+glob = { workspace = true }
+tempfile = { workspace = true }
+directories = { workspace = true }
+chrono = { workspace = true, features = ["serde", "tz", "clock"] }
+uuid = { workspace = true, features = ["serde", "v4", "v7"] }
+base64 = { workspace = true }
+percent-encoding = { workspace = true }
+idna = { workspace = true }
+unicode-normalization = { workspace = true }
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+parking_lot = { workspace = true }
+dashmap = { workspace = true }
+once_cell = { workspace = true }
+crossbeam = { workspace = true }
+arc-swap = { workspace = true }
+proptest = { workspace = true }
+mockito = { workspace = true, features = ["server", "async"] }
+wiremock = { workspace = true }
+
+# Core-only deps
+semver = "1.0"
+hex = "0.4"
+mime = { workspace = true }
+mime_guess = { workspace = true }
+indicatif = { workspace = true }
+console = { workspace = true }
+clap = { workspace = true, features = ["derive", "env"] }
+
+[dev-dependencies]
+tempfile = { workspace = true }
+tokio-test = "0.4"
+pretty_assertions = "1.4"
+serial_test = "3.0"
+
+[features]
+default = []
+android = []  # Enable Android-specific features (none in core)
+desktop = []  # Enable Desktop-specific features (none in core)
