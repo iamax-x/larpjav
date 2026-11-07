@@ -1,5 +1,5 @@
 //! Android Surface handling for wgpu
-//! Usa ANativeWindow_fromSurface via JNI
+//! Usa ANativeWindow_fromSurface via JNI via NativeWindowHelper
 
 use wgpu::{Surface, Instance, SurfaceConfiguration, TextureFormat, PresentMode, CompositeAlphaMode};
 use raw_window_handle::{RawDisplayHandle, RawWindowHandle, AndroidDisplayHandle, AndroidWindowHandle};
@@ -24,7 +24,7 @@ impl AndroidSurface {
         width: u32,
         height: u32,
     ) -> LarpResult<Self> {
-        // 1. Obter ANativeWindow do Surface via JNI
+        // 1. Obter ANativeWindow do Surface via JNI helper
         let native_window = Self::get_native_window(jni_bridge, surface_view)?;
         
         // 2. Criar wgpu Surface
@@ -74,31 +74,50 @@ impl AndroidSurface {
     ) -> LarpResult<*mut std::ffi::c_void> {
         let env = jni_bridge.vm.get_env()?;
         
-        // Try SurfaceView.getHolder().getSurface()
-        let holder = env.call_method(
-            surface_view, 
-            "getHolder", 
-            "()Landroid/view/SurfaceHolder;", 
-            &[]
-        )?.l()?;
+        // Determine if it's a SurfaceView or TextureView and call appropriate helper
+        let class_name = env.get_object_class(surface_view)?.get_name()?;
         
-        let surface = env.call_method(
-            holder, 
-            "getSurface", 
-            "()Landroid/view/Surface;", 
-            &[]
-        )?.l()?;
+        let native_window_ptr = if class_name.contains("SurfaceView") {
+            // Call NativeWindowHelper.getNativeWindowFromSurfaceView
+            let result = env.call_static_method(
+                "com/larp/jv/NativeWindowHelper",
+                "getNativeWindowFromSurfaceView",
+                "(Landroid/view/SurfaceView;)J",
+                &[jni::objects::JValue::Object(&surface_view)]
+            )?;
+            result.j()? as *mut std::ffi::c_void
+        } else if class_name.contains("TextureView") {
+            // Call NativeWindowHelper.getNativeWindowFromTextureView
+            let result = env.call_static_method(
+                "com/larp/jv/NativeWindowHelper",
+                "getNativeWindowFromTextureView",
+                "(Landroid/view/TextureView;)J",
+                &[jni::objects::JValue::Object(&surface_view)]
+            )?;
+            result.j()? as *mut std::ffi::c_void
+        } else {
+            // Fallback: try generic Surface
+            let surface = env.call_method(
+                surface_view,
+                "getSurface",
+                "()Landroid/view/Surface;",
+                &[]
+            )?.l()?;
+            
+            let result = env.call_static_method(
+                "com/larp/jv/NativeWindowHelper",
+                "getNativeWindow",
+                "(Landroid/view/Surface;)J",
+                &[jni::objects::JValue::Object(&surface)]
+            )?;
+            result.j()? as *mut std::ffi::c_void
+        };
         
-        // Use JNI to get ANativeWindow from Surface
-        // This requires a helper class or direct JNI call
-        // For now, we use a placeholder - real implementation needs JNI helper
+        if native_window_ptr.is_null() {
+            return Err(LarpError::Other("Failed to get native window from SurfaceView/TextureView".to_string()));
+        }
         
-        // In practice, you'd have a Kotlin helper:
-        // NativeWindowHelper.getNativeWindow(surface)
-        // which calls ANativeWindow_fromSurface(env, surface)
-        
-        // Placeholder - real implementation needs JNI helper class
-        Ok(std::ptr::null_mut())
+        Ok(native_window_ptr)
     }
 
     pub fn resize(&mut self, instance: &Instance, width: u32, height: u32) {
@@ -125,21 +144,33 @@ impl AndroidSurface {
     pub fn present(&self) -> LarpResult<()> {
         if let Some(surface) = &self.surface {
             let frame = surface.get_current_texture()
-                .map_err(|e| larp_jv_core::LarpError::Other(format!("Failed to get frame: {:?}", e)))?;
+                .map_err(|e| LarpError::Other(format!("Failed to get frame: {:?}", e)))?;
             frame.present();
             Ok(())
         } else {
-            Err(larp_jv_core::LarpError::Other("No surface".to_string()))
+            Err(LarpError::Other("No surface".to_string()))
         }
     }
 }
 
 impl Drop for AndroidSurface {
     fn drop(&mut self) {
-        // ANativeWindow_release
+        // ANativeWindow_release - called via JNI helper
         if !self.native_window.is_null() {
-            // unsafe { ANativeWindow_release(self.native_window); }
+            let _ = self.release_native_window();
         }
+    }
+}
+
+impl AndroidSurface {
+    fn release_native_window(&self) -> LarpResult<()> {
+        if !self.native_window.is_null() {
+            // Call Java helper to release
+            // NativeWindowHelper.releaseNativeWindow(native_window_ptr)
+            // For now, just log
+            log::debug!("Releasing native window: {:p}", self.native_window);
+        }
+        Ok(())
     }
 }
 
