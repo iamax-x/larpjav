@@ -1,0 +1,58 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+      
+      - name: Setup Android NDK
+        uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r26c
+      
+      - name: Install cargo-apk
+        run: cargo install cargo-apk
+      
+      - name: Install cargo-dist
+        run: cargo install cargo-dist
+      
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            target/
+          key: release-cargo-${{ hashFiles('**/Cargo.lock') }}
+      
+      - name: Build all targets
+        run: |
+          cargo build --release --workspace
+          cargo apk build --release -p larp-jv-android
+      
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: true
+          files: |
+            target/release/larp-jv-desktop*
+            target/release/larp-jv-desktop.exe*
+            larp-jv-android/target/*/apk/*.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
