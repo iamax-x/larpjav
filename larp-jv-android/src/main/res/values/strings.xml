@@ -1,0 +1,132 @@
+<resources>
+    <string name="app_name">larp.jv</string>
+    <string name="app_name_short">larp.jv</string>
+    
+    <!-- Auth -->
+    <string name="auth_microsoft">Microsoft</string>
+    <string name="auth_elyby">Ely.by</string>
+    <string name="auth_offline">Offline</string>
+    <string name="auth_select_method">Select authentication method</string>
+    <string name="auth_login">Login</string>
+    <string name="auth_logout">Logout</string>
+    <string name="auth_refresh_skin">Refresh skin</string>
+    
+    <!-- Instances -->
+    <string name="instances_title">Instances</string>
+    <string name="instances_create_new">Create new instance</string>
+    <string name="instances_name">Instance name</string>
+    <string name="instances_version">Version</string>
+    <string name="instances_mod_loader">Mod loader</string>
+    <string name="instances_game_dir">Game directory</string>
+    <string name="instances_java_path">Java path</string>
+    <string name="instances_jvm_args">JVM arguments</string>
+    <string name="instances_memory">Memory (MB)</string>
+    <string name="instances_icon">Icon</string>
+    <string name="instances_delete">Delete instance</string>
+    <string name="instances_clone">Clone instance</string>
+    <string name="instances_launch">Launch</string>
+    
+    <!-- Modding -->
+    <string name="mods_title">Mods</string>
+    <string name="mods_installed">Installed mods</string>
+    <string name="mods_search">Search mods</string>
+    <string name="mods_updates">Updates</string>
+    <string name="mods_install">Install</string>
+    <string name="mods_remove">Remove</string>
+    <string name="mods_enable">Enable</string>
+    <string name="mods_disable">Disable</string>
+    <string name="mods_modpack">Modpack</string>
+    <string name="mods_mrpack">Modrinth pack (.mrpack)</string>
+    <string name="mods_curseforge">CurseForge pack</string>
+    
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_controls">Controls</string>
+    <string name="settings_video">Video</string>
+    <string name="settings_java">Java</string>
+    <string name="settings_experimental">Experimental</string>
+    <string name="settings_misc">Miscellaneous</string>
+    
+    <!-- Video -->
+    <string name="video_render_distance">Render distance</string>
+    <string name="video_fov">FOV</string>
+    <string name="video_vsync">VSync</string>
+    <string name="video_max_fps">Max FPS</string>
+    <string name="video_graphics">Graphics</string>
+    <string name="video_smooth_lighting">Smooth lighting</string>
+    <string name="video_particles">Particles</string>
+    <string name="video_clouds">Clouds</string>
+    <string name="video_entity_shadows">Entity shadows</string>
+    <string name="video_fullscreen">Fullscreen</string>
+    <string name="video_resolution">Resolution</string>
+    
+    <!-- Controls -->
+    <string name="controls_keyboard">Keyboard</string>
+    <string name="controls_mouse">Mouse</string>
+    <string name="controls_gamepad">Gamepad</string>
+    <string name="controls_touch">Touch</string>
+    <string name="controls_sensitivity">Sensitivity</string>
+    <string name="controls_invert_y">Invert Y</string>
+    <string name="controls_raw_input">Raw input</string>
+    
+    <!-- Java -->
+    <string name="java_auto_detect">Auto-detect Java</string>
+    <string name="java_path">Java path</string>
+    <string name="java_jvm_args">JVM arguments</string>
+    <string name="java_max_memory">Max memory</string>
+    <string name="java_min_memory">Min memory</string>
+    
+    <!-- Experimental -->
+    <string name="experimental_vulkan">Enable Vulkan</string>
+    <string name="experimental_mesa">Enable Mesa</string>
+    <string name="experimental_gles32">Force GLES 3.2</string>
+    <string name="experimental_gl_thread">GL Thread</string>
+    <string name="experimental_multirt">MultiRT</string>
+    <string name="experimental_force_gpu">Force GPU</string>
+    <string name="experimental_debug_render">Debug render</string>
+    <string name="experimental_show_fps">Show FPS</string>
+    <string name="experimental_dump_shaders">Dump shaders</string>
+    <string name="experimental_profiling">Enable profiling</string>
+    
+    <!-- Misc -->
+    <string name="misc_language">Language</string>
+    <string name="misc_theme">Theme</string>
+    <string name="misc_auto_update">Auto-update</string>
+    <string name="misc_show_snapshots">Show snapshots</string>
+    <string name="misc_analytics">Analytics</string>
+    <string name="misc_backup_instances">Backup instances</string>
+    <string name="misc_max_log_size">Max log size</string>
+    <string name="misc_custom_skin">Custom skin URL</string>
+    <string name="misc_custom_cape">Custom cape URL</string>
+    <string name="misc_clear_cache">Clear cache</string>
+    <string name="misc_reset_settings">Reset all settings</string>
+    <string name="misc_delete_instances">Delete all instances</string>
+    
+    <!-- Dialogs -->
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_confirm">Confirm</string>
+    <string name="dialog_delete">Delete</string>
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_no">No</string>
+    <string name="dialog_warning">Warning</string>
+    <string name="dialog_error">Error</string>
+    <string name="dialog_info">Information</string>
+    
+    <!-- Errors -->
+    <string name="error_download_failed">Download failed</string>
+    <string name="error_install_failed">Installation failed</string>
+    <string name="error_permission_denied">Permission denied</string>
+    <string name="error_java_not_found">Java not found</string>
+    <string name="error_network_unavailable">Network unavailable</string>
+    
+    <!-- Toast messages -->
+    <string name="toast_instance_created">Instance created</string>
+    <string name="toast_instance_deleted">Instance deleted</string>
+    <string name="toast_mod_installed">Mod installed</string>
+    <string name="toast_mod_removed">Mod removed</string>
+    <string name="toast_settings_saved">Settings saved</string>
+    <string name="toast_download_started">Download started</string>
+    <string name="toast_download_completed">Download completed</string>
+    <string name="toast_copied_to_clipboard">Copied to clipboard</string>
+</resources>

@@ -1,0 +1,107 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'org.rust-lang.cargo-apk'
+}
+
+android {
+    namespace 'com.larp.jv'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'com.larp.jv'
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName '0.1.0'
+
+        ndk {
+            abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86', 'x86_64'
+        }
+
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+        debug {
+            minifyEnabled false
+            debuggable true
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['../target/${cargoAbi}/release']
+            assets.srcDirs = ['assets']
+            res.srcDirs = ['src/main/res']
+        }
+    }
+
+    packagingOptions {
+        doNotStrip '*/arm64-v8a/*.so'
+        doNotStrip '*/armeabi-v7a/*.so'
+        doNotStrip '*/x86/*.so'
+        doNotStrip '*/x86_64/*.so'
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.activity:activity-ktx:1.8.2'
+    implementation 'androidx.fragment:fragment-ktx:1.6.2'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.9.20'
+    
+    // For file picker
+    implementation 'androidx.activity:activity:1.8.2'
+    
+    // For webview
+    implementation 'androidx.webkit:webkit:1.8.0'
+}
+
+cargoApk {
+    crate = 'larp-jv-android'
+    manifest = 'Cargo.toml'
+    features = []
+    target = [
+        'aarch64-linux-android',
+        'armv7-linux-androideabi',
+        'i686-linux-android',
+        'x86_64-linux-android'
+    ]
+}
+
+tasks.withType(org.rust-lang.cargo-apk.CargoApkBuild) {
+    doLast {
+        def apkDir = file("${buildDir}/outputs/apk/${cargoApk.cargoProfile}")
+        def apkFile = file("${apkDir}/larp-jv-android-${cargoApk.cargoProfile}-${cargoAbi}.apk")
+        if (apkFile.exists()) {
+            copy {
+                from apkFile
+                into "${rootDir}/apk"
+                rename { String name -> "larp-jv-${cargoAbi}.apk" }
+            }
+        }
+    }
+}
